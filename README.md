@@ -7,6 +7,7 @@
 [![Groq](https://img.shields.io/badge/AI-Groq%20LLaMA%203.3%2070B-orange)](https://groq.com)
 [![i18n](https://img.shields.io/badge/i18n-PT%20|%20EN%20|%20ES%20|%20FR-blue)](.)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Sponsor](https://img.shields.io/badge/❤️_Sponsor-MyAssistBOT-ff69b4)](https://buy.stripe.com/6oU6oH9Uf17qe4d6gees007)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ---
@@ -321,6 +322,20 @@ Depois adiciona padrões em `intentParser.js` e um `case` em `orchestrator.js`.
 ## 📜 Licença
 
 MIT License — vê [LICENSE](LICENSE)
+
+---
+
+## ❤️ Apoiar o Projeto
+
+O MyAssistBOT é **100% gratuito e open-source**. Se o projeto te é útil e queres apoiar o desenvolvimento, podes fazer uma doação através do Stripe:
+
+| | Valor | Link |
+|:-:|:-----:|:----:|
+| ☕ | **3€** | [**Café para o dev**](https://buy.stripe.com/6oU6oH9Uf17qe4d6gees007) |
+| 🌟 | **5€** | [**Apoio ao projeto**](https://buy.stripe.com/7sYcN5aYj6rKf8h342es006) |
+| 🚀 | **10€** | [**Super impulso**](https://buy.stripe.com/5kQ5kDc2n03maS1gUSes005) |
+
+> Cada doação ajuda a manter o projeto ativo, melhorar funcionalidades e cobrir custos de desenvolvimento. Obrigado! 🙏
 
 ---
 

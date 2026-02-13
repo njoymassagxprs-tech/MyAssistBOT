@@ -92,22 +92,53 @@ app.post('/webhook/stripe', (req, res) => {
 });
 
 function handleCheckoutComplete(session) {
-  console.log('✅ Checkout completo:', {
+  const amount = (session.amount_total / 100).toFixed(2);
+  const email = session.customer_email || 'anónimo';
+  const name = session.customer_details?.name || email;
+  
+  console.log('✅ Doação recebida:', {
     id: session.id,
-    customer: session.customer_email,
-    amount: session.amount_total / 100
+    donor: name,
+    email: email,
+    amount: `€${amount}`
   });
   
-  // TODO: Ativar features premium para o utilizador
-  // notifyUser(session.customer_email, 'Obrigado pela compra!');
+  // Registar doação em ficheiro local
+  const fs = require('fs');
+  const path = require('path');
+  const donationsFile = path.join(__dirname, '..', 'user_data', 'donations.json');
+  
+  try {
+    let donations = [];
+    if (fs.existsSync(donationsFile)) {
+      donations = JSON.parse(fs.readFileSync(donationsFile, 'utf8'));
+    }
+    
+    donations.push({
+      id: session.id,
+      amount: parseFloat(amount),
+      currency: session.currency || 'eur',
+      donor: name,
+      email: email,
+      date: new Date().toISOString()
+    });
+    
+    fs.writeFileSync(donationsFile, JSON.stringify(donations, null, 2));
+    console.log(`  💾 Doação registada (total: ${donations.length} doações)`);
+  } catch (e) {
+    console.log('  ⚠️ Erro ao guardar doação:', e.message);
+  }
+  
+  console.log(`  🙏 Obrigado ${name} pela doação de €${amount}!`);
 }
 
 function handlePaymentSuccess(payment) {
-  console.log('✅ Pagamento bem-sucedido:', payment.id);
+  const amount = payment.amount ? (payment.amount / 100).toFixed(2) : '?';
+  console.log(`✅ Pagamento bem-sucedido: ${payment.id} — €${amount}`);
 }
 
 function handlePaymentFailed(payment) {
-  console.log('❌ Pagamento falhou:', payment.id);
+  console.log('❌ Pagamento falhou:', payment.id, payment.last_payment_error?.message || '');
 }
 
 function handleSubscriptionCreated(subscription) {

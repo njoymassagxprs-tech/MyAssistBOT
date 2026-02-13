@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>❤️ Apoiar MyAssistBOT</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+      color: #e0e0e0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24, #ff6b6b);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header p {
+      font-size: 1.1rem;
+      color: #aaa;
+      max-width: 600px;
+      line-height: 1.6;
+    }
+    
+    .cards {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: center;
+      max-width: 900px;
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 35px 30px;
+      width: 260px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255, 107, 107, 0.4);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .card.popular {
+      border-color: rgba(255, 107, 107, 0.3);
+      background: rgba(255, 107, 107, 0.05);
+    }
+    
+    .card.popular::before {
+      content: '⭐ Popular';
+      position: absolute;
+      top: 12px;
+      right: -28px;
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+      color: white;
+      padding: 4px 35px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      transform: rotate(45deg);
+    }
+    
+    .card-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    
+    .card-price {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      color: #ff6b6b;
+    }
+    
+    .card-price span {
+      font-size: 1rem;
+      color: #888;
+    }
+    
+    .card-desc {
+      font-size: 0.9rem;
+      color: #999;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+    
+    .card-btn {
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .card:nth-child(1) .card-btn {
+      background: rgba(255, 107, 107, 0.15);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+    
+    .card:nth-child(2) .card-btn {
+      background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+      color: white;
+      border: none;
+    }
+    
+    .card:nth-child(3) .card-btn {
+      background: rgba(255, 107, 107, 0.15);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+    
+    .card-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+    }
+    
+    .footer {
+      margin-top: 60px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.8;
+    }
+    
+    .footer a {
+      color: #ff6b6b;
+      text-decoration: none;
+    }
+    
+    .secure-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 20px;
+      padding: 8px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #888;
+    }
+    
+    .back-link {
+      margin-bottom: 30px;
+    }
+    
+    .back-link a {
+      color: #888;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+    
+    .back-link a:hover {
+      color: #ff6b6b;
+    }
+    
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.8rem; }
+      .cards { gap: 20px; }
+      .card { width: 100%; max-width: 320px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="back-link">
+    <a href="/">← Voltar ao MyAssistBOT</a>
+  </div>
+
+  <div class="header">
+    <h1>❤️ Apoiar o MyAssistBOT</h1>
+    <p>
+      O MyAssistBOT é 100% gratuito e open-source. A tua doação ajuda a manter 
+      o projeto ativo, melhorar funcionalidades e cobrir custos de desenvolvimento.
+    </p>
+  </div>
+
+  <div class="cards">
+
+    <div class="card">
+      <div class="card-icon">☕</div>
+      <div class="card-title">Café para o Dev</div>
+      <div class="card-price">3€</div>
+      <div class="card-desc">Um café para manter o código a fluir. Cada linha conta!</div>
+      <a href="https://buy.stripe.com/6oU6oH9Uf17qe4d6gees007" class="card-btn" target="_blank">
+        Doar 3€
+      </a>
+    </div>
+
+    <div class="card popular">
+      <div class="card-icon">🌟</div>
+      <div class="card-title">Apoio ao Projeto</div>
+      <div class="card-price">5€</div>
+      <div class="card-desc">Apoio direto ao desenvolvimento de novas funcionalidades.</div>
+      <a href="https://buy.stripe.com/7sYcN5aYj6rKf8h342es006" class="card-btn" target="_blank">
+        Doar 5€
+      </a>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <div class="card-title">Super Impulso</div>
+      <div class="card-price">10€</div>
+      <div class="card-desc">Impulso extra para funcionalidades avançadas e mais agentes.</div>
+      <a href="https://buy.stripe.com/5kQ5kDc2n03maS1gUSes005" class="card-btn" target="_blank">
+        Doar 10€
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <p>Pagamentos processados de forma segura pelo <a href="https://stripe.com" target="_blank">Stripe</a>.</p>
+    <p>Não são guardados dados de cartão no nosso servidor.</p>
+    <div class="secure-badge">
+      🔒 Pagamento seguro via Stripe
+    </div>
+    <br><br>
+    <p><a href="https://github.com/njoymassagxprs-tech/MyAssistBOT">🤖 MyAssistBOT</a> — 16+ agentes · 100% open-source</p>
+  </div>
+
+</body>
+</html>

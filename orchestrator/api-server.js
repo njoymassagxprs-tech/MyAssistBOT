@@ -588,6 +588,11 @@ app.get('/dashboard', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'web', 'public', 'dashboard.html'));
 });
 
+// Sponsor / Doação
+app.get('/sponsor', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'web', 'public', 'sponsor.html'));
+});
+
 // Stats agregadas para dashboard (segurança/logs)
 app.get('/api/dashboard/stats', (req, res) => {
   res.json(security.getStats());
