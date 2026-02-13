@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="description" content="MyAssistBOT - Assistente IA pessoal">
+  
+  <title>MyAssistBOT</title>
+  <link rel="stylesheet" href="styles.css">
+  <!-- Markdown rendering + Syntax highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.1/marked.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+  <div class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <span class="logo">🤖</span>
+        <h1>MyAssistBOT</h1>
+      </div>
+      <div class="header-right">
+        <span class="status-badge" id="statusBadge">Offline</span>
+      </div>
+    </header>
+    
+    <!-- Messages -->
+    <main class="messages" id="messagesArea">
+      <!-- Welcome -->
+      <div class="welcome" id="welcomeScreen">
+        <div class="welcome-icon">🤖</div>
+        <h2>Olá!</h2>
+        <p>Sou o MyAssistBOT, o teu assistente IA</p>
+        <div class="quick-actions">
+          <button class="chip" data-msg="O que podes fazer?">💡 Ajuda</button>
+          <button class="chip" data-msg="Cria um PDF sobre Portugal">📄 PDF</button>
+          <button class="chip" data-msg="Que horas são?">🕐 Hora</button>
+        </div>
+      </div>
+      
+      <!-- Chat container -->
+      <div class="chat-container" id="chatContainer"></div>
+    </main>
+    
+    <!-- Input -->
+    <footer class="input-area">
+      <!-- Preview de ficheiro anexado -->
+      <div class="attachment-preview" id="attachmentPreview" style="display:none">
+        <div class="attachment-info">
+          <span class="attachment-icon" id="attachmentIcon">📎</span>
+          <span class="attachment-name" id="attachmentName"></span>
+          <span class="attachment-size" id="attachmentSize"></span>
+        </div>
+        <button class="attachment-remove" id="btnRemoveAttachment" title="Remover anexo">✕</button>
+      </div>
+      <div class="input-row">
+        <button class="voice-btn" id="btnVoice" title="Falar (mic)">
+          <span class="mic-icon" id="micIcon">🎤</span>
+        </button>
+        <button class="tts-btn" id="btnTTS" title="Ativar/Desativar voz de resposta">
+          <span class="tts-icon" id="ttsIcon">🔇</span>
+        </button>
+        <button class="upload-btn" id="btnUpload" title="Enviar ficheiro">
+          <span>📎</span>
+        </button>
+        <input type="file" id="fileInput" style="display:none" accept=".txt,.md,.json,.js,.ts,.html,.css,.py,.pdf,.docx,.csv,.xml,.yaml,.yml,.jpg,.jpeg,.png,.gif,.webp,.svg,.mp3,.wav,.ogg,.mp4,.webm,.mov,.avi">
+        <input 
+          type="text" 
+          id="messageInput" 
+          placeholder="Escreve ou fala..." 
+          autocomplete="off"
+        >
+        <button class="send-btn" id="btnSend" title="Enviar">
+          <span>➤</span>
+        </button>
+      </div>
+      <div class="voice-status" id="voiceStatus"></div>
+    </footer>
+  </div>
+  
+  <script src="app.js"></script>
+</body>
+</html>

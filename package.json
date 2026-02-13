@@ -1,0 +1,130 @@
+{
+  "name": "myassist-systembot",
+  "version": "2.0.0",
+  "description": "🤖 Assistente IA open-source com 16+ agentes autónomos, 6 interfaces (Desktop/Web/Telegram/Discord/CLI/API), i18n multilingue (PT/EN/ES/FR), controlo do OS, criação de apps via IA — 100% gratuito",
+  "main": "desktop/main/main.js",
+  "author": "NjoY MassagXprs",
+  "license": "MIT",
+  "scripts": {
+    "setup": "node setup.js",
+    "cli": "node cli/cli.js",
+    "start": "npm run desktop",
+    "desktop": "electron desktop/main/main.js",
+    "desktop:dev": "electron desktop/main/main.js --dev",
+    "core": "node orchestrator/api-server.js",
+    "core:dev": "node --watch orchestrator/api-server.js",
+    "web": "node orchestrator/api-server.js",
+    "telegram": "node bots/telegram.js",
+    "discord": "node bots/discord.js",
+    "dev": "concurrently \"npm run core:dev\" \"npm run desktop:dev\"",
+    "dev:all": "concurrently \"npm run core:dev\" \"npm run telegram\" \"npm run discord\"",
+    "build": "electron-builder",
+    "icons": "node scripts/generate-icons.js",
+    "predist": "npm run icons",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac",
+    "dist:linux": "electron-builder --linux",
+    "test": "node test/test-all.js",
+    "webhook": "node webhook/server.js"
+  },
+  "keywords": [
+    "ai-assistant",
+    "multi-agent",
+    "llm",
+    "groq",
+    "desktop-automation",
+    "electron",
+    "telegram-bot",
+    "discord-bot",
+    "project-builder",
+    "system-control",
+    "open-source",
+    "portuguese",
+    "i18n",
+    "multilingual",
+    "internationalization",
+    "free"
+  ],
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cors": "^2.8.5",
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "fs-extra": "^11.1.1",
+    "node-cron": "^3.0.3",
+    "node-telegram-bot-api": "^0.61.0",
+    "pdfkit": "^0.13.0",
+    "undici": "^6.19.0",
+    "uuid": "^9.0.1",
+    "ws": "^8.14.2"
+  },
+  "optionalDependencies": {
+    "ssh2": "^1.15.0",
+    "pdf-parse": "^1.1.1",
+    "mammoth": "^1.6.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "png-to-ico": "^3.0.1",
+    "sharp": "^0.34.5"
+  },
+  "build": {
+    "appId": "com.myassist.systembot",
+    "productName": "MyAssistBOT",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "agents/**/*",
+      "orchestrator/**/*",
+      "plugins/**/*",
+      "cli/**/*",
+      "web/**/*",
+      "desktop/**/*",
+      "memory/**/*",
+      "i18n/**/*",
+      "locales/**/*",
+      "assets/**/*",
+      "scripts/**/*",
+      "*.js",
+      "package.json",
+      ".env"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icon.ico",
+      "publisherName": "NjoY MassagXprs"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "installerHeaderIcon": "assets/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MyAssistBOT"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "assets/icon.png"
+    }
+  }
+}

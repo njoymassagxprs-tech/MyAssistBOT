@@ -1,0 +1,260 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'MyAssistBOT - Deploy automatico de servidor pessoal na AWS'
+
+# ═══════════════════════════════════════════════════════════
+# PARAMETROS (preenchidos pelo wizard)
+# ═══════════════════════════════════════════════════════════
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t3.micro
+    AllowedValues:
+      - t3.micro
+      - t3.small
+      - t3.medium
+    Description: 'Tipo de instancia EC2 (t3.micro = gratis no Free Tier)'
+
+  KeyPairName:
+    Type: String
+    Default: ''
+    Description: 'Nome do Key Pair para acesso SSH (opcional)'
+
+  GroqApiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'API Key do Groq (principal provider IA - gratis)'
+
+  GeminiApiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'API Key do Google Gemini (opcional, fallback)'
+
+  CerebrasApiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'API Key do Cerebras (opcional, fallback)'
+
+  SerperApiKey:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'API Key do Serper.dev para pesquisa Google (opcional)'
+
+  TelegramBotToken:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'Token do Telegram Bot (opcional)'
+
+  DiscordBotToken:
+    Type: String
+    NoEcho: true
+    Default: ''
+    Description: 'Token do Discord Bot (opcional)'
+
+  BotPort:
+    Type: Number
+    Default: 7777
+    Description: 'Porta do servidor MyAssistBOT'
+
+Conditions:
+  HasKeyPair: !Not [!Equals [!Ref KeyPairName, '']]
+
+# ═══════════════════════════════════════════════════════════
+# RECURSOS
+# ═══════════════════════════════════════════════════════════
+
+Resources:
+  # Security Group — permite acesso ao bot e SSH
+  BotSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'MyAssistBOT - Acesso web e SSH'
+      GroupName: myassistbot-sg
+      SecurityGroupIngress:
+        # SSH (apenas para administracao)
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+          Description: SSH
+        # Porta do Bot
+        - IpProtocol: tcp
+          FromPort: !Ref BotPort
+          ToPort: !Ref BotPort
+          CidrIp: 0.0.0.0/0
+          Description: MyAssistBOT Web
+        # HTTPS (para futuro reverse proxy)
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: HTTPS
+        # HTTP
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: HTTP
+      Tags:
+        - Key: Name
+          Value: myassistbot-security-group
+        - Key: Project
+          Value: MyAssistBOT
+
+  # Instancia EC2
+  BotInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !Ref InstanceType
+      ImageId: !FindInMap [RegionAMI, !Ref 'AWS::Region', AMI]
+      KeyName: !If [HasKeyPair, !Ref KeyPairName, !Ref 'AWS::NoValue']
+      SecurityGroupIds:
+        - !GetAtt BotSecurityGroup.GroupId
+      Tags:
+        - Key: Name
+          Value: MyAssistBOT-Server
+        - Key: Project
+          Value: MyAssistBOT
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          set -e
+          
+          # ═══════════════════════════════════════════════
+          # MyAssistBOT — Script de Instalacao Automatica
+          # ═══════════════════════════════════════════════
+          
+          echo "🤖 A instalar MyAssistBOT..."
+          
+          # Atualizar sistema
+          apt-get update -y
+          apt-get upgrade -y
+          
+          # Instalar Node.js 20 LTS
+          curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+          apt-get install -y nodejs git build-essential
+          
+          # Criar utilizador para o bot
+          useradd -m -s /bin/bash myassistbot || true
+          
+          # Clonar repositorio
+          cd /home/myassistbot
+          git clone https://github.com/NjoYMassaworXp/MyAssist_BOT.git bot
+          cd bot
+          
+          # Instalar dependencias
+          npm install --production
+          
+          # Criar ficheiro .env
+          cat > .env << 'ENVEOF'
+          # MyAssistBOT Configuration (Auto-generated)
+          PORT=${BotPort}
+          
+          # IA Providers
+          GROQ_API_KEY=${GroqApiKey}
+          GEMINI_API_KEY=${GeminiApiKey}
+          CEREBRAS_API_KEY=${CerebrasApiKey}
+          
+          # Web Search
+          SERPER_API_KEY=${SerperApiKey}
+          
+          # Bots (opcional)
+          TELEGRAM_BOT_TOKEN=${TelegramBotToken}
+          DISCORD_BOT_TOKEN=${DiscordBotToken}
+          
+          # System
+          SYSTEM_CONTROLLER_ENABLED=true
+          INPUT_AGENT_ENABLED=false
+          NODE_ENV=production
+          ENVEOF
+          
+          # Corrigir permissoes
+          chown -R myassistbot:myassistbot /home/myassistbot/bot
+          
+          # Instalar PM2 para gestao de processos
+          npm install -g pm2
+          
+          # Criar script de arranque
+          cat > /home/myassistbot/start.sh << 'STARTEOF'
+          #!/bin/bash
+          cd /home/myassistbot/bot
+          pm2 start orchestrator/api-server.js --name myassistbot --env production
+          pm2 save
+          STARTEOF
+          chmod +x /home/myassistbot/start.sh
+          
+          # Iniciar bot como utilizador myassistbot
+          su - myassistbot -c '/home/myassistbot/start.sh'
+          
+          # Configurar PM2 para iniciar no boot
+          env PATH=$PATH:/usr/bin pm2 startup systemd -u myassistbot --hp /home/myassistbot
+          
+          # Health check tag
+          echo "MyAssistBOT installed successfully" > /home/myassistbot/install-status.txt
+          
+          echo "✅ MyAssistBOT instalado e a correr na porta ${BotPort}"
+
+  # Elastic IP (IP fixo gratuito enquanto associado)
+  BotElasticIP:
+    Type: AWS::EIP
+    Properties:
+      InstanceId: !Ref BotInstance
+      Tags:
+        - Key: Name
+          Value: MyAssistBOT-IP
+        - Key: Project
+          Value: MyAssistBOT
+
+# ═══════════════════════════════════════════════════════════
+# AMIs por regiao (Ubuntu 22.04 LTS)
+# ═══════════════════════════════════════════════════════════
+
+Mappings:
+  RegionAMI:
+    us-east-1:
+      AMI: ami-0c7217cdde317cfec
+    us-west-2:
+      AMI: ami-008fe2fc65df48dac
+    eu-west-1:
+      AMI: ami-0694d931cee176e7d
+    eu-central-1:
+      AMI: ami-0faab6bdbac9486fb
+    eu-west-3:
+      AMI: ami-01d21b7be69801c2f
+    sa-east-1:
+      AMI: ami-0fb4cf3a99aa89f72
+    ap-southeast-1:
+      AMI: ami-078c1149d8ad719a7
+
+# ═══════════════════════════════════════════════════════════
+# OUTPUTS
+# ═══════════════════════════════════════════════════════════
+
+Outputs:
+  BotURL:
+    Description: 'URL do MyAssistBOT'
+    Value: !Sub 'http://${BotElasticIP}:${BotPort}'
+
+  BotIP:
+    Description: 'IP publico do servidor'
+    Value: !Ref BotElasticIP
+
+  SSHCommand:
+    Description: 'Comando SSH para aceder ao servidor'
+    Value: !If
+      - HasKeyPair
+      - !Sub 'ssh -i ${KeyPairName}.pem ubuntu@${BotElasticIP}'
+      - 'SSH nao configurado (sem Key Pair)'
+
+  InstanceId:
+    Description: 'ID da instancia EC2'
+    Value: !Ref BotInstance
+
+  SecurityGroupId:
+    Description: 'ID do Security Group'
+    Value: !GetAtt BotSecurityGroup.GroupId

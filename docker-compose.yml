@@ -1,0 +1,71 @@
+# 🤖 MyAssistBOT — Docker Compose
+# Uso: docker-compose up -d
+# Logs: docker-compose logs -f
+
+services:
+  # ═══ API Server (core) ═══
+  api:
+    build: .
+    container_name: mybot-api
+    restart: unless-stopped
+    ports:
+      - "${PORT:-7777}:7777"
+    env_file: .env
+    environment:
+      - PORT=7777
+      - NODE_ENV=production
+    volumes:
+      - ./outputs:/app/outputs
+      - ./user_data:/app/user_data
+      - ./logs:/app/logs
+      - ./plugins:/app/plugins
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http = require('http'); http.get('http://localhost:7777/api/status', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  # ═══ Telegram Bot (opcional — descomenta para usar) ═══
+  # telegram:
+  #   build: .
+  #   container_name: mybot-telegram
+  #   restart: unless-stopped
+  #   command: ["node", "bots/telegram.js"]
+  #   env_file: .env
+  #   environment:
+  #     - API_URL=http://api:7777
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+
+  # ═══ Discord Bot (opcional — descomenta para usar) ═══
+  # discord:
+  #   build: .
+  #   container_name: mybot-discord
+  #   restart: unless-stopped
+  #   command: ["node", "bots/discord.js"]
+  #   env_file: .env
+  #   environment:
+  #     - API_URL=http://api:7777
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+
+  # ═══ Webhook Server (opcional) ═══
+  # webhook:
+  #   build: .
+  #   container_name: mybot-webhook
+  #   restart: unless-stopped
+  #   command: ["node", "webhook/server.js"]
+  #   ports:
+  #     - "${WEBHOOK_PORT:-3002}:3002"
+  #   env_file: .env
+  #   depends_on:
+  #     api:
+  #       condition: service_healthy
+
+volumes:
+  outputs:
+  user_data:
+  logs:
+  plugins:

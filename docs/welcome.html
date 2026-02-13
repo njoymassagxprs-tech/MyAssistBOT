@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bem-vindo ao MyAssistBOT!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .logo {
+      font-size: 80px;
+      margin-bottom: 20px;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      background: linear-gradient(90deg, #00d9ff, #00ff88);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .subtitle {
+      color: #b0b0b0;
+      font-size: 1.2rem;
+    }
+    
+    .section {
+      background: rgba(255,255,255,0.05);
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 20px;
+    }
+    
+    .section h2 {
+      color: #00d9ff;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+    
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+    
+    .feature {
+      background: rgba(0,217,255,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .feature-icon {
+      font-size: 40px;
+      margin-bottom: 10px;
+    }
+    
+    .feature h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    
+    .feature p {
+      color: #b0b0b0;
+      font-size: 0.9rem;
+    }
+    
+    .quick-start {
+      background: rgba(0,255,136,0.1);
+      border-left: 4px solid #00ff88;
+    }
+    
+    .steps {
+      list-style: none;
+    }
+    
+    .steps li {
+      padding: 15px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .steps li:last-child {
+      border-bottom: none;
+    }
+    
+    .step-num {
+      width: 30px;
+      height: 30px;
+      background: #00d9ff;
+      color: #1a1a2e;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+    
+    code {
+      background: #0d1117;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-family: 'Consolas', monospace;
+      color: #00ff88;
+    }
+    
+    .examples {
+      background: rgba(255,165,0,0.1);
+      border-left: 4px solid #ffa500;
+    }
+    
+    .example {
+      padding: 15px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .example:last-child {
+      margin-bottom: 0;
+    }
+    
+    .example .user {
+      color: #00d9ff;
+      margin-bottom: 8px;
+    }
+    
+    .example .bot {
+      color: #00ff88;
+    }
+    
+    .platforms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .platform {
+      background: rgba(255,255,255,0.1);
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-size: 0.9rem;
+    }
+    
+    .cta {
+      text-align: center;
+      margin-top: 40px;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 15px 40px;
+      background: linear-gradient(90deg, #00d9ff, #00ff88);
+      color: #1a1a2e;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: transform 0.2s;
+    }
+    
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">🤖</div>
+      <h1>Bem-vindo ao MyAssistBOT!</h1>
+      <p class="subtitle">O teu assistente IA pessoal multi-plataforma</p>
+    </header>
+    
+    <section class="section">
+      <h2>⚡ O que posso fazer por ti?</h2>
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🧠</div>
+          <h3>Responder Perguntas</h3>
+          <p>Qualquer dúvida, eu esclareço!</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📄</div>
+          <h3>Criar PDFs</h3>
+          <p>Documentos gerados por IA</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💻</div>
+          <h3>Executar Código</h3>
+          <p>JavaScript em sandbox segura</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">📁</div>
+          <h3>Gerir Ficheiros</h3>
+          <p>Criar notas e organizar</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🎤</div>
+          <h3>Comandos por Voz</h3>
+          <p>Fala comigo naturalmente</p>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">💾</div>
+          <h3>Memória</h3>
+          <p>Lembro do contexto!</p>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section quick-start">
+      <h2>🚀 Começar em 3 Passos</h2>
+      <ol class="steps">
+        <li>
+          <span class="step-num">1</span>
+          <div>
+            <strong>Instalar</strong><br>
+            <code>npm install</code>
+          </div>
+        </li>
+        <li>
+          <span class="step-num">2</span>
+          <div>
+            <strong>Configurar</strong><br>
+            <code>npm run setup</code> - Configura a tua API key gratuita
+          </div>
+        </li>
+        <li>
+          <span class="step-num">3</span>
+          <div>
+            <strong>Iniciar</strong><br>
+            <code>npm run dev</code> - Abre a app!
+          </div>
+        </li>
+      </ol>
+    </section>
+    
+    <section class="section examples">
+      <h2>💬 Exemplos de Uso</h2>
+      
+      <div class="example">
+        <div class="user">👤 "Qual é a receita de bolo de chocolate?"</div>
+        <div class="bot">🤖 "Aqui está uma receita deliciosa..."</div>
+      </div>
+      
+      <div class="example">
+        <div class="user">👤 "Cria um PDF sobre energia solar"</div>
+        <div class="bot">🤖 "📄 PDF criado: outputs/energia_solar.pdf"</div>
+      </div>
+      
+      <div class="example">
+        <div class="user">👤 "Executar: [1,2,3].map(x => x*2)"</div>
+        <div class="bot">🤖 "✅ Resultado: [2, 4, 6]"</div>
+      </div>
+    </section>
+    
+    <section class="section">
+      <h2>📱 Onde Posso Usar?</h2>
+      <p>O MyAssistBOT funciona em múltiplas plataformas:</p>
+      <div class="platforms">
+        <span class="platform">🖥️ Desktop (Windows/Mac/Linux)</span>
+        <span class="platform">🌐 Browser (Web)</span>
+        <span class="platform">💻 .exe (Windows)</span>
+        <span class="platform">💬 Telegram</span>
+        <span class="platform">🎮 Discord</span>
+        <span class="platform">🖥️ Terminal CLI</span>
+      </div>
+    </section>
+    
+    <div class="cta">
+      <a href="GUIA_UTILIZADOR.md" class="btn">📖 Ver Guia Completo</a>
+    </div>
+    
+    <footer class="footer">
+      <p>MyAssistBOT v2.0 | Gratuito e Open Source</p>
+      <p>API Key grátis em <a href="https://console.groq.com" style="color: #00d9ff;">console.groq.com</a></p>
+    </footer>
+  </div>
+</body>
+</html>

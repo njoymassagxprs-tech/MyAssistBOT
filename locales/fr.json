@@ -1,0 +1,454 @@
+{
+  "general": {
+    "confirmation_required": "⚠️ **Confirmation Requise**\n\n{{reason}}\n\nÊtes-vous sûr ? (répondez \"oui, je confirme\")",
+    "error": "❌ Erreur de traitement : {{message}}",
+    "plugin_no_response": "❌ Le plugin n'a renvoyé aucune réponse.",
+    "project_cancelled": "❌ Projet annulé.",
+    "no_output": "(pas de sortie)",
+    "truncated": "...(tronqué)"
+  },
+
+  "pdf": {
+    "created": "📄 PDF créé avec succès !\n📁 Emplacement : {{path}}"
+  },
+
+  "note": {
+    "created": "📝 Note créée !\n📁 {{path}}"
+  },
+
+  "code": {
+    "extract_error": "❌ Impossible d'extraire le code. Utilisez le format :\n`exécuter : console.log(\"Hello\")`",
+    "remaining": "⚡ Exécutions restantes : {{remaining}}/{{max}} par minute"
+  },
+
+  "time": {
+    "current": "🕐 **Heure actuelle :** {{time}}",
+    "timezone": "📍 Fuseau horaire : {{timezone}}"
+  },
+
+  "date": {
+    "current": "📅 **Date du jour :** {{date}}"
+  },
+
+  "search": {
+    "results_header": "🔍 **Recherche Web :** \"{{query}}\"",
+    "sources": "📚 Sources :",
+    "ai_prompt": "En vous basant sur ces résultats de recherche, répondez à la question \"{{prompt}}\" de manière claire et utile :"
+  },
+
+  "system": {
+    "create_file": {
+      "missing_path": "❌ J'ai besoin du chemin du fichier. Ex : \"crée fichier test.txt avec bonjour monde\"",
+      "success": "✅ Fichier créé : {{path}}\n📄 Taille : {{size}} octets",
+      "error": "❌ Erreur lors de la création du fichier : {{error}}"
+    },
+    "read_file": {
+      "missing_path": "❌ J'ai besoin du chemin du fichier. Ex : \"lis le fichier config.json\"",
+      "success": "📄 **Contenu de {{path}} :**",
+      "error": "❌ Erreur lors de la lecture du fichier : {{error}}"
+    },
+    "edit_file": {
+      "missing_params": "❌ J'ai besoin du chemin et du contenu. Ex : \"édite fichier.txt et mets nouveau texte\"",
+      "success": "✅ Fichier modifié : {{path}}\n📄 Nouvelle taille : {{size}} octets",
+      "error": "❌ Erreur lors de l'édition : {{error}}"
+    },
+    "list_dir": {
+      "success": "📂 **Contenu de {{path}} :**",
+      "more_items": "... et {{count}} éléments de plus",
+      "error": "❌ Erreur lors du listage : {{error}}"
+    },
+    "open_folder": {
+      "success": "✅ Dossier ouvert dans l'explorateur : {{path}}",
+      "error": "❌ Erreur lors de l'ouverture du dossier : {{error}}"
+    },
+    "execute": {
+      "missing_command": "❌ J'ai besoin de la commande. Ex : \"exécute npm --version\"",
+      "success": "✅ **Commande exécutée :** `{{command}}`",
+      "error": "❌ Erreur lors de l'exécution : {{error}}"
+    },
+    "run_script": {
+      "missing_path": "❌ J'ai besoin du chemin du script. Ex : \"lance le script build.js\"",
+      "success": "✅ **Script exécuté :** `{{path}}`",
+      "error": "❌ Erreur lors de l'exécution du script : {{error}}"
+    },
+    "open_app": {
+      "missing": "❌ Quelle application dois-je ouvrir ? Ex : \"ouvre notepad\" ou \"ouvre chrome\"",
+      "success": "✅ **Application ouverte :** {{name}}"
+    },
+    "open_url": {
+      "missing": "❌ Quel site dois-je ouvrir ? Ex : \"ouvre site google.com\"",
+      "success": "✅ **URL ouverte :** {{url}}"
+    },
+    "list_processes": {
+      "header": "📋 **Processus en cours** ({{count}}) :",
+      "more": "... et {{count}} processus de plus"
+    },
+    "kill_process": {
+      "missing": "❌ Quel processus dois-je terminer ? Ex : \"termine processus notepad\" ou \"kill 1234\"",
+      "success": "✅ **Processus terminé :** {{identifier}}"
+    },
+    "list_windows": {
+      "header": "🪟 **Fenêtres ouvertes** ({{count}}) :"
+    },
+    "focus_window": {
+      "missing": "❌ Quelle fenêtre dois-je mettre au premier plan ? Ex : \"focus fenêtre chrome\"",
+      "success": "✅ **Fenêtre focalisée :** {{window}}"
+    },
+    "window_action": {
+      "missing": "❌ Quelle fenêtre ? Ex : \"minimise chrome\" ou \"ferme notepad\"",
+      "success": "✅ **Fenêtre {{action}} :** {{window}}",
+      "minimize": "minimisée",
+      "maximize": "maximisée",
+      "restore": "restaurée",
+      "close": "fermée"
+    }
+  },
+
+  "input": {
+    "type": {
+      "missing": "❌ Quel texte dois-je taper ? Ex : \"tape bonjour monde\"",
+      "success": "✅ **Tapé :** {{length}} caractères dans la fenêtre \"{{window}}\""
+    },
+    "shortcut": {
+      "missing": "❌ Quel raccourci ? Ex : \"raccourci ctrl+c\" ou \"appuie ctrl+v\"",
+      "success": "✅ **Raccourci exécuté :** {{keys}}"
+    },
+    "key": {
+      "missing": "❌ Quelle touche ? Ex : \"appuie entrée\" ou \"touche tab 3 fois\"",
+      "success": "✅ **Touche appuyée :** {{key}} ({{times}}x)"
+    },
+    "click": {
+      "success": "✅ **Clic {{type}}** {{position}}",
+      "double": "double"
+    },
+    "scroll": {
+      "success": "✅ **Défilement {{direction}}** ({{amount}}x)",
+      "up": "vers le haut",
+      "down": "vers le bas"
+    },
+    "move": {
+      "missing": "❌ J'ai besoin des coordonnées. Ex : \"déplace curseur vers 500, 300\"",
+      "success": "✅ **Curseur déplacé** vers ({{x}}, {{y}})"
+    },
+    "screenshot": {
+      "success": "✅ **Capture d'écran sauvegardée :** {{filename}}\n📁 Emplacement : {{path}}"
+    },
+    "copy": {
+      "missing": "❌ Quel texte copier ? Ex : \"copie texte ici\"",
+      "success": "✅ **Copié dans le presse-papiers :** {{length}} caractères"
+    },
+    "paste": {
+      "success": "✅ **Collé** depuis le presse-papiers"
+    },
+    "get_position": {
+      "success": "🖱️ **Position du curseur :** ({{x}}, {{y}})"
+    }
+  },
+
+  "project": {
+    "list_empty": "📂 Aucun projet créé pour l'instant.\n💡 Essayez : \"crée une app de tâches en React\"",
+    "list_header": "📂 **Projets Créés ({{count}}) :**",
+    "cancelled": "❌ Projet annulé."
+  },
+
+  "remote": {
+    "add_machine_missing": "❌ J'ai besoin de l'alias et de l'IP. Ex : \"ajoute machine serveur1 192.168.1.100 user root\"",
+    "remove_machine_missing": "❌ Quelle machine supprimer ? Ex : \"supprime machine serveur1\"",
+    "execute_missing": "❌ J'ai besoin de la machine et de la commande. Ex : \"exécute sur serveur1 : ls -la\"",
+    "status_not_found": "❌ Machine \"{{alias}}\" non trouvée.",
+    "status_info": "📡 **{{alias}}** — {{host}}:{{port}}\n👤 {{username}} | 💻 {{os}}\n📅 Dernière connexion : {{lastConnected}}",
+    "status_header": "📡 **État du Remote Agent**\n\nSSH : {{ssh}}\nMachines : {{count}}",
+    "status_never": "Jamais"
+  },
+
+  "rag": {
+    "index_success": "📚 **Indexation Terminée**\n\n✅ Fichiers indexés : {{indexed}}\n⏩ Ignorés : {{skipped}}\n📦 Total chunks : {{chunks}}\n📁 Total sources : {{sources}}\n📖 Vocabulaire : {{vocabulary}} termes",
+    "index_errors": "⚠️ Erreurs : {{count}}",
+    "search_empty": "🔍 Aucun résultat trouvé dans les documents indexés. Essayez d'indexer d'abord avec \"indexe documents\".",
+    "search_header": "🔍 **Résultats de recherche** ({{count}} trouvés)",
+    "stats": "📊 **État du RAG**\n\n📦 Chunks : {{chunks}}\n📁 Sources : {{sources}}\n📚 Documents traités : {{docs}}\n📖 Vocabulaire : {{vocabulary}} termes",
+    "stats_empty_hint": "💡 Aucun document indexé. Utilisez \"indexe documents\" pour commencer.",
+    "file_upload": "📎 Pour envoyer des fichiers, utilisez l'interface web (glissez ou cliquez sur le bouton d'upload) ou envoyez via API."
+  },
+
+  "automation": {
+    "task_created": "⏰ **Tâche programmée !**\n\n📋 {{name}}\n🔄 Type : {{type}}\n⏱️ {{description}}\n📅 Prochaine exécution : {{next}}",
+    "list_empty": "📋 Aucune tâche programmée.\n💡 Exemple : \"programme tous les jours à 9h vérifier email\"",
+    "list_header": "⏰ **Tâches Programmées ({{count}}) :**",
+    "delete_missing": "❌ Quelle tâche supprimer ? Utilisez \"lister tâches\" pour voir les disponibles.",
+    "delete_success": "✅ Tâche supprimée : {{name}}",
+    "history_empty": "📊 Aucun historique d'exécution.",
+    "history_header": "📊 **Historique des Automatisations** (dernières {{count}}) :",
+    "parse_error": "❌ Je n'ai pas pu interpréter la programmation. Exemples :\n- \"tous les jours à 8h dis-moi la météo\"\n- \"les vendredis à 18h résume mes notes\"\n- \"toutes les 2 heures vérifie le serveur\"\n- \"dans 30 minutes rappelle-moi d'appeler le client\""
+  },
+
+  "memory": {
+    "remember_success": "🧠 **Mémorisé !**\n\n📝 \"{{content}}\"\n📂 Catégorie : {{category}}",
+    "recall_empty": "🧠 Je n'ai rien trouvé en mémoire à ce sujet.\n💡 Utilisez \"souviens-toi que...\" pour sauvegarder des informations.",
+    "recall_header": "🧠 **Souvenirs trouvés ({{count}}) :**",
+    "forget_success": "🗑️ Oublié : {{count}} souvenir(s) supprimé(s).",
+    "profile_empty": "🧠 Je ne sais encore rien sur vous.\n💡 Discutez avec moi et j'apprendrai, ou dites \"souviens-toi que...\"",
+    "profile_header": "🧠 **Ce que je sais sur vous :**",
+    "categories": {
+      "personal": "👤 Personnel",
+      "preference": "⭐ Préférence",
+      "work": "💼 Travail",
+      "skill": "🛠️ Compétence",
+      "habit": "🔁 Habitude",
+      "contact": "📇 Contact",
+      "note": "📝 Note",
+      "context": "🌍 Contexte"
+    }
+  },
+
+  "skill": {
+    "created": "🎓 **Skill créée !**\n\n📋 Nom : \"{{name}}\"\n🎯 Déclencheur : \"{{trigger}}\"\n⚡ Étapes : {{count}}\n\n💡 Dites maintenant \"{{trigger}}\" pour exécuter !",
+    "executed": "🎓 **Skill \"{{name}}\" exécutée :**",
+    "executed_simple": "✅ Skill exécutée.",
+    "list_empty": "🎓 Aucune skill créée.\n💡 Exemple : \"quand je dis bonjour, dis-moi l'heure + cherche les actualités\"",
+    "list_header": "🎓 **Skills Personnalisées ({{count}}) :**",
+    "delete_success": "✅ Skill supprimée : \"{{name}}\"",
+    "parse_error": "❌ Je n'ai pas pu interpréter la skill. Exemples :\n• \"quand je dis 'deploy', fais git pull puis npm install\"\n• \"crée une commande 'bonjour' qui cherche la météo et dit bonjour\"\n• \"enseigne : 'status' → vérifie le serveur et montre les stats\"",
+    "not_found": "❌ Skill non trouvée."
+  },
+
+  "vision": {
+    "unavailable": "❌ Vision Agent indisponible. Configurez GEMINI_API_KEY dans .env",
+    "analyze_success": "📸 **Analyse de l'Écran :**\n\n{{analysis}}",
+    "ocr_success": "📝 **Texte extrait de l'écran :**",
+    "errors_success": "🔍 **Analyse des erreurs à l'écran :**\n\n{{analysis}}"
+  },
+
+  "alert": {
+    "monitor_created": "🔔 **Moniteur créé !**\n\n📋 {{name}}\n📡 Type : {{type}}\n🔗 URL : {{url}}",
+    "reminder_created": "⏰ **Rappel créé !**\n\n📋 {{name}}\n🕐 Quand : {{when}}",
+    "list_empty": "🔔 Aucun moniteur actif.\n💡 Exemples :\n• \"surveille https://monsite.com\"\n• \"rappelle-moi dans 2h de faire un backup\"\n• \"alerte si le mot erreur apparaît sur https://logs.com\"",
+    "list_header": "🔔 **Moniteurs Actifs ({{count}}) :**",
+    "delete_success": "✅ Moniteur supprimé : {{name}}",
+    "history_empty": "📊 Aucune alerte déclenchée pour l'instant.",
+    "history_header": "📊 **Historique des Alertes** (dernières {{count}}) :",
+    "parse_error": "❌ Je n'ai pas pu interpréter le moniteur. Exemples :\n• \"surveille le site https://example.com toutes les 5 minutes\"\n• \"rappelle-moi dans 2 heures d'appeler le client\"\n• \"suis le flux https://blog.com/rss\"\n• \"préviens-moi quand 'promotion' apparaît sur example.com\"",
+    "not_found": "❌ Moniteur non trouvé."
+  },
+
+  "workflow": {
+    "list_empty": "📋 Aucun workflow disponible.",
+    "list_header": "📋 **Workflows Disponibles ({{count}}) :**",
+    "not_found": "❌ Workflow non trouvé. Utilisez \"lister workflows\" pour voir les disponibles.",
+    "created": "📋 **Workflow créé !**\n\n📋 Nom : \"{{name}}\"\n📊 Étapes : {{count}}\n\n💡 Utilisez \"exécute workflow {{name}}\" pour lancer !",
+    "delete_success": "✅ Workflow supprimé : \"{{name}}\"",
+    "parse_error": "❌ Format : \"crée workflow 'nom' : étape1 + étape2 + étape3\"\n\nExemple : \"crée workflow 'Deploy' : git pull + npm install + pm2 restart\"",
+    "custom_label": "(personnalisé)",
+    "needs_input": "Ce workflow a besoin d'une entrée. Que voulez-vous traiter ?",
+    "result_header": "📋 **Workflow Terminé : {{name}}**",
+    "result_summary": "📊 **Résultat :** {{success}}/{{total}} étapes complétées"
+  },
+
+  "clipboard": {
+    "current_sensitive": "⚠️ Données sensibles détectées : {{types}}",
+    "history_empty": "📋 Historique du presse-papiers vide.\n💡 Utilisez \"surveiller presse-papiers\" pour commencer à sauvegarder.",
+    "history_header": "📋 **Historique du Presse-papiers ({{count}}) :**",
+    "search_empty": "📋 Aucun résultat dans le presse-papiers pour \"{{query}}\".",
+    "search_header": "📋 **Résultats du Presse-papiers ({{count}}) :**",
+    "monitor_stopped": "⏹️ Surveillance du presse-papiers **arrêtée**.",
+    "monitor_started": "▶️ Surveillance du presse-papiers **démarrée**. Tout ce que vous copiez sera sauvegardé dans l'historique.",
+    "current_empty": "📋 Presse-papiers vide.",
+    "current_header": "📋 **Presse-papiers Actuel :**",
+    "current_type": "**Type :** {{type}}",
+    "current_size": "📏 **Taille :** {{length}} caractères",
+    "current_sensitive_header": "⚠️ **Données sensibles détectées :**",
+    "current_error": "❌ Impossible de lire le presse-papiers : {{error}}"
+  },
+
+  "provider": {
+    "setup": {
+      "catalog_header": "🔌 **Configurer un Fournisseur d'IA Personnalisé**\n\n📋 **Fournisseurs disponibles :**",
+      "instructions": "💡 **Comment configurer :**\n```\nconfigurer openai avec sk-proj-abc123...\n```\n```\nsetup anthropic avec sk-ant-abc123...\n```\n```\nutiliser mistral avec la clé abc123...\n```",
+      "need_key": "🔑 Vous avez besoin de la clé API du fournisseur auquel vous êtes abonné.",
+      "invalid_key": "❌ **Clé API invalide** pour {{provider}}.\n\nErreur : {{error}}\n\n🔑 Vérifiez que la clé est correcte et que l'abonnement est actif.",
+      "success": "✅ **Fournisseur d'IA Configuré !**\n\n🔌 **Fournisseur :** {{name}}\n🤖 **Modèle :** {{model}}\n✨ **Priorité :** Maximale (utilisé avant Groq)",
+      "usage_info": "Désormais, toutes vos conversations utiliseront **{{name}}**.\nSi l'API échoue, Groq sera utilisé comme secours automatique.",
+      "useful_commands": "💡 Commandes utiles :\n• \"statut de mon fournisseur\" — voir la configuration\n• \"changer modèle pour gpt-4o\" — changer de modèle\n• \"supprimer mon fournisseur\" — revenir à Groq\n• \"désactiver mon fournisseur\" — mettre en pause",
+      "error": "❌ Erreur de configuration : {{error}}",
+      "exception": "❌ Erreur lors de la configuration du fournisseur : {{error}}"
+    },
+    "list": {
+      "header": "🔌 **Fournisseurs d'IA Disponibles**",
+      "current": "✅ **Votre fournisseur actuel :** {{name}} ({{model}})\n   Statut : {{status}}\n   Utilisation totale : {{tokens}} tokens",
+      "all_header": "📋 **Tous les fournisseurs pris en charge :**",
+      "configure_hint": "💡 Pour configurer : \"configurer [fournisseur] avec [clé-api]\""
+    },
+    "remove": {
+      "success": "🗑️ **Fournisseur supprimé avec succès !**\n\nLe fournisseur \"{{name}}\" a été déconfiguré.\nDésormais, toutes les conversations utiliseront **Groq** (gratuit).\n\n💡 Vous pouvez reconfigurer à tout moment avec \"configurer [fournisseur] avec [clé-api]\".",
+      "no_provider": "❌ Aucun fournisseur configuré à supprimer."
+    },
+    "status": {
+      "no_provider": "📊 **Statut du Fournisseur d'IA**\n\n❌ Aucun fournisseur personnalisé configuré.\nVous utilisez **Groq** (gratuit) comme fournisseur par défaut.\n\n💡 Pour configurer un fournisseur payant : \"configurer [fournisseur] avec [clé-api]\"\n📋 Pour voir les options : \"lister fournisseurs d'IA\"",
+      "header": "📊 **Statut de Votre Fournisseur d'IA**",
+      "active_msg": "✨ Vos messages sont traités par votre fournisseur payant.\nEn cas d'échec, Groq est utilisé comme secours automatique.",
+      "inactive_msg": "⏸️ Votre fournisseur est **désactivé**. Les messages utilisent Groq.\nDites \"activer mon fournisseur\" pour réactiver.",
+      "commands": "💡 Commandes :\n• \"changer modèle pour [modèle]\"\n• \"désactiver/activer mon fournisseur\"\n• \"supprimer mon fournisseur\""
+    },
+    "toggle": {
+      "enabled": "▶️ **Fournisseur réactivé !**\n\n\"{{name}}\" est maintenant **actif**. Vos messages seront traités par lui.",
+      "disabled": "⏸️ **Fournisseur désactivé.**\n\n\"{{name}}\" est maintenant **en pause**. Les messages utiliseront Groq (gratuit).\n\nDites \"activer mon fournisseur\" pour réactiver.",
+      "no_provider": "❌ Aucun fournisseur configuré."
+    },
+    "model": {
+      "changed": "🤖 **Modèle changé !**\n\nModèle : **{{model}}**\nFournisseur : {{provider}}\n\nVos prochains messages utiliseront ce modèle.",
+      "list_header": "🤖 **Modèles disponibles pour {{name}} :**\n\nModèle actuel : **{{model}}**",
+      "change_hint": "💡 \"changer modèle pour [nom-du-modèle]\"",
+      "provider_not_found": "❌ Fournisseur non trouvé dans le catalogue.",
+      "no_provider": "❌ Aucun fournisseur configuré. Configurez d'abord avec \"configurer [fournisseur] avec [clé-api]\"."
+    },
+    "onboarding": "🔌 **Intégration IA Premium**\n\nSaviez-vous que vous pouvez utiliser votre propre fournisseur d'IA ?\n\n🆓 **Actuel :** Groq (gratuit, LLaMA 3.3 70B)\n💎 **Premium :** OpenAI, Claude, Mistral, DeepSeek, xAI et plus !\n\n**Pourquoi ?**\n✨ Modèles plus avancés (GPT-4o, Claude 3.5, etc.)\n📊 Sans limites de taux\n🔒 Votre propre compte et contrôle\n\n**Comment configurer :**\nDites : \"configurer [fournisseur] avec [clé-api]\"\nExemple : \"configurer openai avec sk-proj-abc123...\"\n\nGroq reste comme secours gratuit !"
+  },
+
+  "system_info": {
+    "title": "📊 **État du Système**",
+    "version": "🤖 **MyAssistBOT v2.0**",
+    "uptime": "⏱️ Temps d'activité : {{uptime}}",
+    "memory": "💾 Mémoire : {{used}}Mo / {{total}}Mo",
+    "platform": "💻 Plateforme : {{platform}} {{arch}}",
+    "node": "📦 Node.js : {{version}}",
+    "ai_header": "🧠 **IA**",
+    "groq_configured": "Groq : ✅ Configuré",
+    "groq_not_configured": "Groq : ❌ Non configuré",
+    "model": "Modèle : {{model}}",
+    "limits_header": "⚡ **Limites**",
+    "exec_limit": "Exécutions de code : {{remaining}}/{{max}} par minute",
+    "files_header": "📁 **Fichiers**",
+    "allowed_folders": "Documents : {{count}} dossiers autorisés"
+  },
+
+  "agents": {
+    "title": "🤖 **Agents Disponibles**",
+    "ai": "🧠 **AI Agent** - Chat et génération de texte\n   Modèle : Groq LLaMA 3.3 70B",
+    "web_search": "🔍 **Web Search Agent** - Recherche sur internet",
+    "pdf": "📄 **PDF Agent** - Création de documents\n   Format : A4 professionnel",
+    "file": "📁 **File Agent** - Gestion de fichiers\n   Dossiers : Documents, outputs, temp",
+    "code": "⚡ **Code Runner** - Exécution de code\n   Langage : JavaScript (sandbox)",
+    "code_limit": "Limite : {{max}} exécutions/minute",
+    "project": "🏗️ **Project Builder** - Création de projets complets\n   Génère du code via IA pour des apps entières",
+    "remote": "📡 **Remote Agent** - Automatisation à distance (SSH)\n   Statut : Squelette (nécessite ssh2)",
+    "automation": "⏰ **Automation Agent** - Tâches programmées\n   Scheduler intelligent en langage naturel",
+    "smart_memory": "🧠 **Smart Memory** - Mémoire persistante\n   Apprend des faits sur vous automatiquement",
+    "smart_memory_count": "{{count}} souvenirs",
+    "skill": "🎓 **Skill Agent** - Commandes personnalisées\n   Enseignez des commandes au bot en langage naturel",
+    "skill_count": "{{count}} skills",
+    "vision": "👁️ **Vision Agent** - Capture et analyse d'écran\n   Gemini Vision pour OCR et analyse visuelle",
+    "vision_needs_key": "❌ Hors ligne (nécessite GEMINI_API_KEY)",
+    "alert": "🔔 **Alert Agent** - Surveillance proactive\n   URLs, rappels, RSS, alertes par mot-clé",
+    "alert_count": "{{count}} moniteurs",
+    "workflow": "📋 **Workflow Agent** - Recettes et flux\n   Workflows prédéfinis et personnalisés",
+    "workflow_count": "{{count}} workflows",
+    "clipboard": "📎 **Clipboard Agent** - Presse-papiers intelligent\n   Historique, détection de données sensibles",
+    "custom_provider": "🔌 **Custom Provider** - IA Payante Personnalisée\n   Supporte : OpenAI, Claude, Mistral, DeepSeek, xAI, Cohere, OpenRouter",
+    "status_online": "✅ En ligne",
+    "status_offline": "❌ Hors ligne",
+    "status_available": "✅ Disponible (configurez avec votre clé API)"
+  },
+
+  "help": {
+    "title": "🤖 **MyAssistBOT - Aide**",
+    "basic": "📝 **Commandes de Base**\n   /help - Ce message\n   /status - État du système\n   /agents - Lister les agents",
+    "time": "🕐 **Date et Heure**\n   \"Quelle heure est-il ?\"\n   \"Quelle est la date d'aujourd'hui ?\"",
+    "examples": "💬 **Exemples d'Utilisation**\n   \"Quelle est la capitale du Portugal ?\"\n   \"Crée un PDF sur l'intelligence artificielle\"\n   \"Créer note : faire les courses demain\"\n   \"Lister fichiers\"\n   \"Exécuter : console.log(2 + 2)\"",
+    "search": "🔍 **Recherche Web**\n   \"Recherche sur l'intelligence artificielle\"\n   \"Actualités sur la technologie\"\n   \"Prévisions météo à Paris\"",
+    "project": "🏗️ **Project Builder**\n   \"Crée une app de tâches en React\"\n   \"Blueprint d'une API REST\"\n   \"Liste mes projets\"",
+    "chaining": "🔗 **Agent Chaining**\n   \"Recherche sur React et crée un PDF résumé\"\n   Les demandes multi-actions sont exécutées en séquence !",
+    "automation": "⏰ **Automatisation**\n   \"Programme tous les jours à 9h dis bonjour\"\n   \"Toutes les 30 minutes vérifie le statut\"\n   \"Lister tâches programmées\"\n   \"Supprimer tâche X\"",
+    "memory": "🧠 **Mémoire Intelligente**\n   \"Souviens-toi que mon nom est Jean\"\n   \"Que sais-tu sur moi ?\"\n   \"Oublie mon email\"\n   Le bot apprend automatiquement de la conversation !",
+    "skills": "🎓 **Skills Personnalisées**\n   \"Quand je dis bonjour, dis l'heure + cherche les actualités\"\n   \"Lister skills\"\n   \"Supprimer skill X\"",
+    "vision": "👁️ **Vision / Capture**\n   \"Analyse mon écran\"\n   \"Extrais le texte de l'écran\" (OCR)\n   \"Quelles erreurs y a-t-il à l'écran ?\"",
+    "alerts": "🔔 **Alertes et Rappels**\n   \"Surveille https://monsite.com\"\n   \"Rappelle-moi dans 2h de faire un backup\"\n   \"Alerte si le mot X apparaît dans URL\"\n   \"Lister moniteurs\"",
+    "workflows": "📋 **Workflows**\n   \"Lister workflows\"\n   \"Exécute workflow routine matinale\"\n   \"Crée workflow : étape1 + étape2 + étape3\"",
+    "clipboard": "📎 **Presse-papiers**\n   \"Qu'est-ce que j'ai dans le presse-papiers ?\"\n   \"Historique du presse-papiers\"\n   \"Cherche dans le presse-papiers : texte\"\n   \"Surveiller presse-papiers\"",
+    "custom_provider": "🔌 **IA Personnalisée / Custom Provider**\n   \"Lister fournisseurs d'IA\"\n   \"Configurer openai avec sk-proj-abc123...\"\n   \"Statut de mon fournisseur\"\n   \"Changer modèle pour gpt-4o\"\n   \"Désactiver/Activer mon fournisseur\"\n   \"Supprimer mon fournisseur\"\n   Supporte : OpenAI, Claude, Mistral, DeepSeek, xAI, Cohere, OpenRouter",
+    "language": "🌍 **Langue**\n   \"Changer langue en anglais\"\n   \"Change language to English\"\n   \"Quelles langues supporte-tu ?\"",
+    "dashboard": "📊 **Dashboard**\n   Accédez à /dashboard sur l'interface web pour voir les métriques en temps réel",
+    "footer": "📚 Demandez n'importe quoi - l'IA répond !"
+  },
+
+  "language": {
+    "changed": "🌍 **Langue changée en {{language}} !**\n\nDésormais, toutes les réponses seront en {{language}}.",
+    "already_set": "🌍 Vous utilisez déjà **{{language}}**.",
+    "unsupported": "❌ Langue \"{{lang}}\" non supportée.\n\nLangues disponibles :\n{{list}}",
+    "list_header": "🌍 **Langues Disponibles :**",
+    "current": "Langue actuelle : **{{language}}**",
+    "reset": "🌍 Langue réinitialisée au défaut du système : **{{language}}**.",
+    "change_hint": "💡 \"changer langue en [langue]\""
+  },
+
+  "chain": {
+    "pdf_created": "PDF créé : {{path}}",
+    "file_created": "Fichier créé : {{path}}",
+    "app_opened": "App ouverte : {{name}}",
+    "url_opened": "URL ouverte : {{url}}",
+    "text_typed": "Texte tapé",
+    "shortcut_executed": "Raccourci exécuté : {{keys}}",
+    "remote_format": "❌ Format : machine : commande",
+    "task_scheduled": "⏰ Tâche programmée : {{name}}",
+    "memorized": "🧠 Mémorisé : {{content}}",
+    "memory_empty": "Rien trouvé en mémoire.",
+    "vision_unavailable": "❌ Vision Agent indisponible",
+    "monitor_created": "🔔 Moniteur créé : {{name}}",
+    "screenshot": "Capture d'écran : {{path}}",
+    "workflow_not_found": "❌ Workflow non trouvé",
+    "workflow_prepared": "Workflow \"{{name}}\" préparé avec {{steps}} étapes."
+  },
+
+  "cli": {
+    "banner_title": "MyAssistBOT CLI v2.0.0",
+    "commands_header": "Commandes :",
+    "cmd_help": "/help     - Voir l'aide",
+    "cmd_clear": "/clear    - Effacer l'écran",
+    "cmd_history": "/history  - Voir l'historique",
+    "cmd_status": "/status   - État du système",
+    "cmd_lang": "/lang     - Changer de langue",
+    "cmd_exit": "/exit     - Quitter",
+    "prompt_hint": "Tapez votre message et appuyez sur Entrée.",
+    "goodbye": "👋 Au revoir !",
+    "unknown_cmd": "❓ Commande inconnue. Utilisez /help pour voir les commandes.",
+    "help_title": "📋 Commandes Disponibles",
+    "help_examples": "Exemples d'utilisation :",
+    "help_ex1": "\"Explique-moi ce qu'est le machine learning\"",
+    "help_ex2": "\"Crée un PDF avec un résumé du projet\"",
+    "help_ex3": "\"Exécute ce code : console.log('hello')\"",
+    "help_ex4": "\"Liste les fichiers dans le dossier actuel\"",
+    "history_empty": "📜 Historique vide.",
+    "history_title": "📜 Historique des Messages :",
+    "status_title": "📊 État du Système",
+    "status_online": "✅ Statut : En ligne",
+    "status_uptime": "⏱️  Uptime : {{hours}}h {{mins}}m",
+    "status_model": "🧠 Modèle : {{model}}",
+    "status_memory": "💾 Mémoire : {{used}}Mo / {{total}}Mo",
+    "status_messages": "💬 Messages : {{count}}",
+    "processing": "⏳ Traitement en cours",
+    "error": "❌ Erreur : {{message}}",
+    "loader_error": "❌ Erreur lors du chargement de l'orchestrateur : {{message}}"
+  },
+
+  "bot": {
+    "welcome": "🤖 *Bonjour {{name}} !*\n\nJe suis *MyAssistBOT*, votre assistant IA !\n\n*Ce que je peux faire :*\n🧠 Répondre aux questions\n📄 Créer des documents PDF\n💻 Exécuter du code\n📁 Gérer des fichiers\n\nEnvoyez-moi un message ou utilisez /help pour voir les commandes !",
+    "help": "📋 *Commandes Disponibles*\n\n*Général :*\n/start - Démarrer la conversation\n/help - Voir cette aide\n/status - État du bot\n\n*Agents :*\n/pdf [description] - Créer un PDF\n/code [code] - Exécuter du code\n\n💡 Ou envoyez simplement votre question !",
+    "status": "📊 *État de MyAssistBOT*\n\n✅ Statut : En ligne\n⏱️ Uptime : {{hours}}h {{mins}}m\n🧠 Modèle : {{model}}\n💾 Mémoire : {{memory}}Mo",
+    "unknown_cmd": "❓ Commande inconnue.\nUtilisez /help pour voir les commandes disponibles.",
+    "no_response": "⚠️ Pas de réponse",
+    "orchestrator_unavailable": "⚠️ Orchestrateur indisponible. Vérifiez la configuration.",
+    "process_error": "❌ Erreur lors du traitement du message. Réessayez.",
+    "pdf_usage": "📄 Utilisation : /pdf [description du document]\n\nExemple : /pdf Rapport de ventes Q1",
+    "pdf_error": "❌ Erreur lors de la création du PDF : {{message}}",
+    "code_usage": "💻 Utilisation : /code [code JavaScript]\n\nExemple : /code 2 + 2",
+    "code_error": "❌ Erreur : {{message}}",
+    "ask_question": "Poser une question à MyAssistBOT",
+    "your_question": "Votre question",
+    "create_pdf": "Créer un document PDF",
+    "doc_description": "Description du document",
+    "run_code": "Exécuter du code JavaScript",
+    "code_to_run": "Code à exécuter",
+    "view_status": "Voir l'état du bot",
+    "view_help": "Voir l'aide",
+    "discord_help": "📋 **Commandes MyAssistBOT**\n\n**/ask** [question] - Poser une question\n**/pdf** [description] - Créer un document PDF\n**/code** [code] - Exécuter du JavaScript\n**/status** - Voir l'état du bot\n**/help** - Voir cette aide\n\n💡 Vous pouvez aussi mentionner @MyAssistBOT avec votre question !"
+  }
+}

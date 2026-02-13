@@ -1,0 +1,27 @@
+node_modules
+npm-debug.log*
+.env
+*.key
+*.pem
+*.cert
+
+# Dados do utilizador (não copiar para imagem)
+user_data/*
+!user_data/.gitkeep
+logs/*
+temp/*
+outputs/*
+!outputs/.gitkeep
+Documentos/*
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Electron (não necessário em Docker)
+desktop/
+dist/

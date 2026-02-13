@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyAssistBOT — Setup do Servidor AWS</title>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-hover: #1a1a28;
+      --accent: #6c5ce7;
+      --accent-dim: rgba(108, 92, 231, 0.15);
+      --accent-glow: rgba(108, 92, 231, 0.3);
+      --text: #e8e8f0;
+      --text-secondary: #8888a0;
+      --success: #2ecc71;
+      --warning: #f1c40f;
+      --danger: #e74c3c;
+      --border: rgba(255, 255, 255, 0.08);
+      --radius: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ═══ HEADER ═══ */
+    .setup-header {
+      text-align: center;
+      padding: 40px 20px 20px;
+      background: linear-gradient(180deg, rgba(108,92,231,0.12) 0%, transparent 100%);
+    }
+
+    .setup-header h1 {
+      font-size: 2rem;
+      background: linear-gradient(135deg, var(--accent), #a29bfe);
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+
+    .setup-header p {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+
+    /* ═══ PROGRESS BAR ═══ */
+    .progress-container {
+      max-width: 700px;
+      margin: 30px auto 10px;
+      padding: 0 20px;
+    }
+
+    .progress-steps {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .progress-steps::before {
+      content: '';
+      position: absolute;
+      top: 18px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: var(--border);
+      z-index: 0;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 18px;
+      left: 30px;
+      height: 3px;
+      background: var(--accent);
+      z-index: 1;
+      transition: width 0.5s ease;
+      width: 0;
+    }
+
+    .step-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+      cursor: pointer;
+    }
+
+    .step-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--bg-card);
+      border: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      transition: all 0.3s;
+      margin-bottom: 8px;
+    }
+
+    .step-indicator.active .step-circle {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .step-indicator.done .step-circle {
+      border-color: var(--success);
+      background: rgba(46, 204, 113, 0.15);
+      color: var(--success);
+    }
+
+    .step-label {
+      font-size: 11px;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 80px;
+    }
+
+    .step-indicator.active .step-label { color: var(--accent); }
+    .step-indicator.done .step-label { color: var(--success); }
+
+    /* ═══ WIZARD CONTAINER ═══ */
+    .wizard-container {
+      max-width: 700px;
+      margin: 20px auto 40px;
+      padding: 0 20px;
+    }
+
+    .wizard-step {
+      display: none;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 30px;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .wizard-step.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .wizard-step h2 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wizard-step .subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      font-size: 0.95rem;
+    }
+
+    /* ═══ INSTRUCTION BLOCKS ═══ */
+    .instruction {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+
+    .instruction-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent-dim);
+      border-radius: 8px;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 14px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .instruction-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .instruction p, .instruction li {
+      color: var(--text-secondary);
+      line-height: 1.6;
+      font-size: 0.92rem;
+    }
+
+    .instruction ul {
+      list-style: none;
+      padding-left: 38px;
+    }
+
+    .instruction ul li::before {
+      content: '→';
+      color: var(--accent);
+      margin-right: 8px;
+    }
+
+    .instruction a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--accent);
+    }
+
+    .instruction a:hover {
+      opacity: 0.8;
+    }
+
+    .external-link::after {
+      content: ' ↗';
+      font-size: 12px;
+    }
+
+    /* ═══ FORMS ═══ */
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+
+    .form-group .hint {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 0.95rem;
+      transition: border-color 0.3s;
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .badge-free {
+      background: rgba(46, 204, 113, 0.15);
+      color: var(--success);
+    }
+
+    .badge-optional {
+      background: rgba(241, 196, 15, 0.15);
+      color: var(--warning);
+    }
+
+    .badge-required {
+      background: rgba(108, 92, 231, 0.15);
+      color: var(--accent);
+    }
+
+    /* ═══ BUTTONS ═══ */
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 28px;
+      border-radius: 12px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5a4bd4;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-hover);
+      color: var(--text);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #27ae60;
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ═══ CODE BLOCKS ═══ */
+    .code-block {
+      background: #0d0d14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.85rem;
+      color: var(--success);
+      overflow-x: auto;
+      position: relative;
+      margin: 12px 0;
+    }
+
+    .code-block .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--bg-hover);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .code-block .copy-btn:hover {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    /* ═══ INFO CARDS ═══ */
+    .info-card {
+      background: var(--accent-dim);
+      border: 1px solid rgba(108, 92, 231, 0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 16px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .info-card.warning {
+      background: rgba(241, 196, 15, 0.08);
+      border-color: rgba(241, 196, 15, 0.2);
+    }
+
+    .info-card.success {
+      background: rgba(46, 204, 113, 0.08);
+      border-color: rgba(46, 204, 113, 0.2);
+    }
+
+    .info-card .icon { font-size: 24px; flex-shrink: 0; }
+    .info-card .info-text { font-size: 0.9rem; line-height: 1.5; color: var(--text-secondary); }
+    .info-card .info-text strong { color: var(--text); }
+
+    /* ═══ COST TABLE ═══ */
+    .cost-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+    }
+
+    .cost-table th, .cost-table td {
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.88rem;
+    }
+
+    .cost-table th {
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cost-table .price { color: var(--success); font-weight: 600; }
+    .cost-table .price.paid { color: var(--warning); }
+
+    /* ═══ DEPLOY STATUS ═══ */
+    .deploy-status {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .deploy-status .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .deploy-log {
+      background: #0d0d14;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      max-height: 250px;
+      overflow-y: auto;
+      text-align: left;
+      font-family: 'Cascadia Code', monospace;
+      font-size: 0.82rem;
+      margin-top: 20px;
+    }
+
+    .deploy-log .log-line {
+      padding: 3px 0;
+      color: var(--text-secondary);
+    }
+
+    .deploy-log .log-line.success { color: var(--success); }
+    .deploy-log .log-line.error { color: var(--danger); }
+    .deploy-log .log-line.info { color: var(--accent); }
+
+    /* ═══ CHECK ITEMS ═══ */
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    .check-icon { font-size: 20px; }
+    .check-item .check-label { flex: 1; }
+    .check-item .check-status {
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .check-status.ok { color: var(--success); }
+    .check-status.fail { color: var(--danger); }
+    .check-status.pending { color: var(--warning); }
+
+    /* ═══ TAB SELECTOR ═══ */
+    .deploy-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .deploy-tab {
+      padding: 10px 20px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+      font-family: inherit;
+    }
+
+    .deploy-tab.active {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .deploy-tab:hover:not(.active) {
+      background: var(--bg-hover);
+    }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .progress-steps { gap: 4px; }
+      .step-label { font-size: 10px; max-width: 60px; }
+      .wizard-step { padding: 20px; }
+      .btn-row { flex-direction: column; }
+      .btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <div class="setup-header">
+    <h1>🤖 MyAssistBOT — Setup do Servidor</h1>
+    <p>Guia passo-a-passo para teres o teu próprio assistente IA na cloud</p>
+  </div>
+
+  <!-- ═══ PROGRESS STEPS ═══ -->
+  <div class="progress-container">
+    <div class="progress-steps">
+      <div class="progress-line" id="progressLine"></div>
+      <div class="step-indicator active" data-step="1">
+        <div class="step-circle">1</div>
+        <div class="step-label">Conta AWS</div>
+      </div>
+      <div class="step-indicator" data-step="2">
+        <div class="step-circle">2</div>
+        <div class="step-label">API Keys</div>
+      </div>
+      <div class="step-indicator" data-step="3">
+        <div class="step-circle">3</div>
+        <div class="step-label">Configurar</div>
+      </div>
+      <div class="step-indicator" data-step="4">
+        <div class="step-circle">4</div>
+        <div class="step-label">Deploy</div>
+      </div>
+      <div class="step-indicator" data-step="5">
+        <div class="step-circle">5</div>
+        <div class="step-label">Verificar</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ WIZARD STEPS ═══ -->
+  <div class="wizard-container">
+
+    <!-- ═══ STEP 1: CRIAR CONTA AWS ═══ -->
+    <div class="wizard-step active" id="step1">
+      <h2>☁️ Passo 1: Conta AWS</h2>
+      <p class="subtitle">Cria a tua conta gratuita na Amazon Web Services</p>
+
+      <div class="info-card">
+        <span class="icon">💡</span>
+        <div class="info-text">
+          <strong>AWS Free Tier</strong> — A AWS oferece <strong>12 meses grátis</strong> com uma instância t3.micro
+          (1 vCPU, 1GB RAM). Mais que suficiente para o MyAssistBOT servir 1-5 utilizadores em simultâneo.
+        </div>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">1</span>
+          Criar conta AWS
+        </div>
+        <ul>
+          <li>Vai a <a href="https://aws.amazon.com/free/" target="_blank" class="external-link">aws.amazon.com/free</a></li>
+          <li>Clica em <strong>"Create a Free Account"</strong></li>
+          <li>Preenche email, password e nome da conta</li>
+          <li>Escolhe <strong>"Personal"</strong> como tipo de conta</li>
+        </ul>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">2</span>
+          Verificação (necessário)
+        </div>
+        <ul>
+          <li>Cartão de crédito/débito (para verificação — <strong>não será cobrado</strong>)</li>
+          <li>Número de telefone para verificação SMS</li>
+          <li>Escolhe o plano <strong>"Basic Support - Free"</strong></li>
+        </ul>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">3</span>
+          Aceder à Console
+        </div>
+        <ul>
+          <li>Após confirmação, acede a <a href="https://console.aws.amazon.com/" target="_blank" class="external-link">console.aws.amazon.com</a></li>
+          <li>Escolhe a região <strong>EU (Ireland) — eu-west-1</strong> (mais perto de Portugal)</li>
+          <li>A região aparece no canto superior direito da console</li>
+        </ul>
+      </div>
+
+      <div class="info-card warning">
+        <span class="icon">⚠️</span>
+        <div class="info-text">
+          <strong>Custos estimados:</strong> Dentro do Free Tier, o custo é <strong>0€</strong>.
+          Após 12 meses, uma instância t3.micro custa ~<strong>8-9€/mês</strong>.
+          Podes desligar a qualquer momento.
+        </div>
+      </div>
+
+      <table class="cost-table">
+        <thead>
+          <tr><th>Recurso</th><th>Free Tier</th><th>Após 12 meses</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>EC2 t3.micro (1vCPU, 1GB)</td><td class="price">Grátis (750h/mês)</td><td class="price paid">~8€/mês</td></tr>
+          <tr><td>Elastic IP</td><td class="price">Grátis (se associado)</td><td class="price">Grátis</td></tr>
+          <tr><td>Tráfego (saída)</td><td class="price">100GB/mês grátis</td><td class="price paid">~0.09€/GB</td></tr>
+          <tr><td>Storage (EBS 30GB)</td><td class="price">Grátis</td><td class="price paid">~3€/mês</td></tr>
+        </tbody>
+      </table>
+
+      <div class="btn-row">
+        <a href="/" class="btn btn-secondary">← Voltar ao Bot</a>
+        <button class="btn btn-primary" onclick="goToStep(2)">Próximo: API Keys →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 2: OBTER API KEYS ═══ -->
+    <div class="wizard-step" id="step2">
+      <h2>🔑 Passo 2: API Keys de IA</h2>
+      <p class="subtitle">Regista-te nos serviços de IA gratuitos para alimentar o MyAssistBOT</p>
+
+      <div class="info-card">
+        <span class="icon">🧠</span>
+        <div class="info-text">
+          O MyAssistBOT usa <strong>IA multi-provider</strong> com fallback automático. Se um falha, tenta o seguinte.
+          Configura pelo menos <strong>1 provider</strong> (recomendamos Groq).
+        </div>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">1</span>
+          Groq <span class="badge badge-free">Grátis</span> <span class="badge badge-required">Recomendado</span>
+        </div>
+        <p>LLaMA 3.3 70B — rápido, gratuito, 14.400 pedidos/dia</p>
+        <ul>
+          <li>Vai a <a href="https://console.groq.com/" target="_blank" class="external-link">console.groq.com</a></li>
+          <li>Regista-te com Google ou GitHub</li>
+          <li>Vai a <strong>API Keys → Create API Key</strong></li>
+          <li>Copia a key (começa com <code>gsk_</code>)</li>
+        </ul>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">2</span>
+          Google Gemini <span class="badge badge-free">Grátis</span> <span class="badge badge-optional">Opcional</span>
+        </div>
+        <p>Gemini 2.0 Flash — suporta visão, bom fallback</p>
+        <ul>
+          <li>Vai a <a href="https://aistudio.google.com/apikey" target="_blank" class="external-link">aistudio.google.com/apikey</a></li>
+          <li>Clica <strong>"Create API Key"</strong></li>
+          <li>Copia a key</li>
+        </ul>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">3</span>
+          Cerebras <span class="badge badge-free">Grátis</span> <span class="badge badge-optional">Opcional</span>
+        </div>
+        <p>LLaMA 3.3 70B — ultra-rápido (>2000 tokens/s)</p>
+        <ul>
+          <li>Vai a <a href="https://cloud.cerebras.ai/" target="_blank" class="external-link">cloud.cerebras.ai</a></li>
+          <li>Regista-te e cria uma API key</li>
+        </ul>
+      </div>
+
+      <div class="instruction">
+        <div class="instruction-header">
+          <span class="instruction-number">4</span>
+          Serper.dev <span class="badge badge-free">Grátis 2500/mês</span> <span class="badge badge-optional">Opcional</span>
+        </div>
+        <p>Pesquisa Google real — para resultados web atualizados</p>
+        <ul>
+          <li>Vai a <a href="https://serper.dev/" target="_blank" class="external-link">serper.dev</a></li>
+          <li>Regista-te e obtém a API key</li>
+        </ul>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goToStep(1)">← Anterior</button>
+        <button class="btn btn-primary" onclick="goToStep(3)">Próximo: Configurar →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 3: CONFIGURAR ═══ -->
+    <div class="wizard-step" id="step3">
+      <h2>⚙️ Passo 3: Configuração</h2>
+      <p class="subtitle">Preenche as tuas chaves e preferências — o wizard gera tudo automaticamente</p>
+
+      <div class="form-group">
+        <label>🔑 Groq API Key <span class="badge badge-required">Recomendado</span></label>
+        <input type="password" id="cfg-groq" placeholder="gsk_xxxxxxxxxxxxx">
+        <p class="hint">Provider principal de IA. 14.400 pedidos/dia grátis.</p>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>🔑 Gemini API Key <span class="badge badge-optional">Opcional</span></label>
+          <input type="password" id="cfg-gemini" placeholder="AIzaSy...">
+        </div>
+        <div class="form-group">
+          <label>🔑 Cerebras API Key <span class="badge badge-optional">Opcional</span></label>
+          <input type="password" id="cfg-cerebras" placeholder="csk-...">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>🔍 Serper API Key <span class="badge badge-optional">Opcional</span></label>
+        <input type="password" id="cfg-serper" placeholder="Chave Serper.dev para pesquisa Google">
+      </div>
+
+      <hr style="border-color: var(--border); margin: 24px 0;">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>🤖 Telegram Bot Token <span class="badge badge-optional">Opcional</span></label>
+          <input type="password" id="cfg-telegram" placeholder="123456:ABC-...">
+          <p class="hint">Obtém via @BotFather no Telegram</p>
+        </div>
+        <div class="form-group">
+          <label>🎮 Discord Bot Token <span class="badge badge-optional">Opcional</span></label>
+          <input type="password" id="cfg-discord" placeholder="Token do Discord Bot">
+          <p class="hint">Obtém em discord.com/developers</p>
+        </div>
+      </div>
+
+      <hr style="border-color: var(--border); margin: 24px 0;">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>🖥️ Tipo de Instância</label>
+          <select id="cfg-instance">
+            <option value="t3.micro">t3.micro — 1 vCPU, 1GB RAM (Free Tier ✓)</option>
+            <option value="t3.small">t3.small — 2 vCPU, 2GB RAM (~17€/mês)</option>
+            <option value="t3.medium">t3.medium — 2 vCPU, 4GB RAM (~34€/mês)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>🌍 Região AWS</label>
+          <select id="cfg-region">
+            <option value="eu-west-1">EU (Ireland) — eu-west-1 🇮🇪</option>
+            <option value="eu-west-3">EU (Paris) — eu-west-3 🇫🇷</option>
+            <option value="eu-central-1">EU (Frankfurt) — eu-central-1 🇩🇪</option>
+            <option value="us-east-1">US East (Virginia) — us-east-1 🇺🇸</option>
+            <option value="us-west-2">US West (Oregon) — us-west-2 🇺🇸</option>
+            <option value="sa-east-1">South America (São Paulo) — sa-east-1 🇧🇷</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>🔢 Porta do Bot</label>
+        <input type="number" id="cfg-port" value="7777" min="1024" max="65535">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goToStep(2)">← Anterior</button>
+        <button class="btn btn-primary" onclick="goToStep(4)">Próximo: Deploy →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 4: DEPLOY ═══ -->
+    <div class="wizard-step" id="step4">
+      <h2>🚀 Passo 4: Deploy</h2>
+      <p class="subtitle">Escolhe o método de deploy — automático ou manual</p>
+
+      <div class="deploy-tabs">
+        <button class="deploy-tab active" onclick="switchTab('auto')">⚡ Automático (CloudFormation)</button>
+        <button class="deploy-tab" onclick="switchTab('manual')">🔧 Manual (SSH)</button>
+        <button class="deploy-tab" onclick="switchTab('docker')">🐳 Docker</button>
+      </div>
+
+      <!-- TAB: AUTOMATICO -->
+      <div class="tab-content active" id="tab-auto">
+        <div class="info-card">
+          <span class="icon">⚡</span>
+          <div class="info-text">
+            <strong>Deploy com 1 click</strong> — O CloudFormation cria automaticamente o servidor, 
+            configura segurança, instala o MyAssistBOT e inicia tudo. Demora ~3-5 minutos.
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">1</span>
+            Lança o CloudFormation Stack
+          </div>
+          <p>Clica no botão abaixo para abrir a Console AWS com o template pré-carregado:</p>
+          <div style="text-align:center; margin: 16px 0;">
+            <button class="btn btn-success" id="launchCfnBtn" onclick="launchCloudFormation()">
+              🚀 Lançar na AWS
+            </button>
+          </div>
+          <p style="font-size:0.85rem">Ou copia o URL do template para usar manualmente:</p>
+          <div class="code-block" id="cfnUrl">
+            A gerar URL do template...
+            <button class="copy-btn" onclick="copyToClipboard('cfnUrl')">📋 Copiar</button>
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">2</span>
+            Na Console AWS
+          </div>
+          <ul>
+            <li>Verifica os parâmetros (já preenchidos com os teus dados)</li>
+            <li>Marca a checkbox <strong>"I acknowledge that AWS CloudFormation might create IAM resources"</strong></li>
+            <li>Clica <strong>"Create stack"</strong></li>
+            <li>Espera ~3-5 minutos até o status ser <strong>CREATE_COMPLETE</strong></li>
+          </ul>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">3</span>
+            Obter URL do bot
+          </div>
+          <ul>
+            <li>Vai ao separador <strong>"Outputs"</strong> do stack</li>
+            <li>Copia o valor de <strong>"BotURL"</strong> — é o endereço do teu MyAssistBOT!</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TAB: MANUAL -->
+      <div class="tab-content" id="tab-manual">
+        <div class="info-card">
+          <span class="icon">🔧</span>
+          <div class="info-text">
+            <strong>Deploy manual via SSH</strong> — Para quem prefere controlo total.
+            Cria uma instância EC2, liga-te por SSH e corre os comandos.
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">1</span>
+            Criar instância EC2
+          </div>
+          <ul>
+            <li>Na Console AWS, vai a <strong>EC2 → Launch Instance</strong></li>
+            <li>Nome: <strong>MyAssistBOT</strong></li>
+            <li>AMI: <strong>Ubuntu 22.04 LTS</strong></li>
+            <li>Tipo: <strong>t3.micro</strong> (Free Tier)</li>
+            <li>Key Pair: <strong>Cria novo</strong> (descarrega o ficheiro .pem)</li>
+            <li>Security Group: Permite portas <strong>22 (SSH)</strong> e <strong>7777 (Bot)</strong></li>
+            <li>Clica <strong>"Launch Instance"</strong></li>
+          </ul>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">2</span>
+            Ligar por SSH
+          </div>
+          <div class="code-block">
+ssh -i "tua-key.pem" ubuntu@IP_DA_INSTANCIA
+            <button class="copy-btn" onclick="copyText('ssh -i tua-key.pem ubuntu@IP_DA_INSTANCIA')">📋</button>
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">3</span>
+            Instalar MyAssistBOT
+          </div>
+          <p>Cola este script completo no terminal SSH:</p>
+          <div class="code-block" id="manualScript">
+            A gerar script...
+            <button class="copy-btn" onclick="copyToClipboard('manualScript')">📋 Copiar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB: DOCKER -->
+      <div class="tab-content" id="tab-docker">
+        <div class="info-card">
+          <span class="icon">🐳</span>
+          <div class="info-text">
+            <strong>Deploy com Docker</strong> — Se já tens um servidor com Docker instalado 
+            (AWS, DigitalOcean, VPS, etc.), esta é a forma mais simples.
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">1</span>
+            Clonar e configurar
+          </div>
+          <div class="code-block">
+git clone https://github.com/NjoYMassaworXp/MyAssist_BOT.git<br>
+cd MyAssist_BOT
+            <button class="copy-btn" onclick="copyText('git clone https://github.com/NjoYMassaworXp/MyAssist_BOT.git && cd MyAssist_BOT')">📋</button>
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">2</span>
+            Criar .env
+          </div>
+          <p>Descarrega o ficheiro .env gerado:</p>
+          <div style="text-align:center; margin:12px 0;">
+            <button class="btn btn-primary" onclick="downloadEnvFile()">📥 Descarregar .env</button>
+          </div>
+        </div>
+
+        <div class="instruction">
+          <div class="instruction-header">
+            <span class="instruction-number">3</span>
+            Iniciar com Docker Compose
+          </div>
+          <div class="code-block">
+docker-compose up -d
+            <button class="copy-btn" onclick="copyText('docker-compose up -d')">📋</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goToStep(3)">← Anterior</button>
+        <button class="btn btn-primary" onclick="goToStep(5)">Próximo: Verificar →</button>
+      </div>
+    </div>
+
+    <!-- ═══ STEP 5: VERIFICAR ═══ -->
+    <div class="wizard-step" id="step5">
+      <h2>✅ Passo 5: Verificação</h2>
+      <p class="subtitle">Verifica se o teu MyAssistBOT está a funcionar</p>
+
+      <div class="form-group">
+        <label>🌐 URL do teu servidor</label>
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="verify-url" placeholder="http://IP_DO_SERVIDOR:7777" style="flex:1">
+          <button class="btn btn-primary" onclick="verifyServer()">🔍 Verificar</button>
+        </div>
+        <p class="hint">Insere o IP ou URL que obtiveste no passo anterior</p>
+      </div>
+
+      <div id="verifyResults" style="display:none; margin-top:20px;">
+        <h3 style="margin-bottom:12px;">Resultados do Health Check:</h3>
+        
+        <div class="check-item">
+          <span class="check-icon">🌐</span>
+          <span class="check-label">Servidor acessível</span>
+          <span class="check-status pending" id="check-server">A verificar...</span>
+        </div>
+
+        <div class="check-item">
+          <span class="check-icon">🧠</span>
+          <span class="check-label">IA configurada</span>
+          <span class="check-status pending" id="check-ai">A verificar...</span>
+        </div>
+
+        <div class="check-item">
+          <span class="check-icon">💬</span>
+          <span class="check-label">Chat funcional</span>
+          <span class="check-status pending" id="check-chat">A verificar...</span>
+        </div>
+
+        <div class="check-item">
+          <span class="check-icon">📡</span>
+          <span class="check-label">WebSocket</span>
+          <span class="check-status pending" id="check-ws">A verificar...</span>
+        </div>
+
+        <div id="verifySuccess" style="display:none; margin-top:20px;">
+          <div class="info-card success">
+            <span class="icon">🎉</span>
+            <div class="info-text">
+              <strong>MyAssistBOT está operacional!</strong><br>
+              O teu assistente IA pessoal está a correr no teu próprio servidor.
+              Acede pelo browser no URL acima ou configura os bots Telegram/Discord.
+            </div>
+          </div>
+
+          <div style="text-align:center; margin-top:16px;">
+            <button class="btn btn-success" onclick="openBotUrl()">🤖 Abrir MyAssistBOT</button>
+          </div>
+        </div>
+
+        <div id="verifyFailed" style="display:none; margin-top:20px;">
+          <div class="info-card warning">
+            <span class="icon">⏳</span>
+            <div class="info-text">
+              <strong>O servidor pode ainda estar a iniciar.</strong><br>
+              Após o deploy com CloudFormation, pode demorar 3-5 minutos até ficar disponível.
+              Tenta novamente em 1-2 minutos.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-secondary" onclick="goToStep(4)">← Anterior</button>
+        <a href="/" class="btn btn-success">🏠 Ir para o MyAssistBOT</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ═══════════════════════════════════════════════════════════
+    // WIZARD STATE
+    // ═══════════════════════════════════════════════════════════
+
+    let currentStep = 1;
+    const totalSteps = 5;
+
+    function goToStep(step) {
+      if (step < 1 || step > totalSteps) return;
+
+      // Marcar steps anteriores como done
+      document.querySelectorAll('.step-indicator').forEach((el, i) => {
+        el.classList.remove('active', 'done');
+        if (i + 1 < step) el.classList.add('done');
+        if (i + 1 === step) el.classList.add('active');
+      });
+
+      // Mostrar step correto
+      document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+      document.getElementById(`step${step}`).classList.add('active');
+
+      // Progress line
+      const line = document.getElementById('progressLine');
+      const pct = ((step - 1) / (totalSteps - 1)) * 100;
+      line.style.width = `calc(${pct}% - ${pct > 0 ? 0 : 30}px)`;
+
+      currentStep = step;
+
+      // Gerar conteúdo dinâmico
+      if (step === 4) generateDeployContent();
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // CONFIGURAÇÃO
+    // ═══════════════════════════════════════════════════════════
+
+    function getConfig() {
+      return {
+        groqKey: document.getElementById('cfg-groq')?.value?.trim() || '',
+        geminiKey: document.getElementById('cfg-gemini')?.value?.trim() || '',
+        cerebrasKey: document.getElementById('cfg-cerebras')?.value?.trim() || '',
+        serperKey: document.getElementById('cfg-serper')?.value?.trim() || '',
+        telegramToken: document.getElementById('cfg-telegram')?.value?.trim() || '',
+        discordToken: document.getElementById('cfg-discord')?.value?.trim() || '',
+        instanceType: document.getElementById('cfg-instance')?.value || 't3.micro',
+        region: document.getElementById('cfg-region')?.value || 'eu-west-1',
+        port: document.getElementById('cfg-port')?.value || '7777'
+      };
+    }
+
+    function generateEnvContent() {
+      const cfg = getConfig();
+      return `# 🤖 MyAssistBOT - Configuração (gerada pelo setup wizard)
+# Data: ${new Date().toISOString().split('T')[0]}
+
+# ── Porta do Servidor ──
+PORT=${cfg.port}
+
+# ── IA Providers ──
+GROQ_API_KEY=${cfg.groqKey}
+GEMINI_API_KEY=${cfg.geminiKey}
+CEREBRAS_API_KEY=${cfg.cerebrasKey}
+
+# ── Pesquisa Web ──
+SERPER_API_KEY=${cfg.serperKey}
+
+# ── Bots (opcional) ──
+TELEGRAM_BOT_TOKEN=${cfg.telegramToken}
+DISCORD_BOT_TOKEN=${cfg.discordToken}
+
+# ── Sistema ──
+SYSTEM_CONTROLLER_ENABLED=true
+INPUT_AGENT_ENABLED=false
+NODE_ENV=production
+`;
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // DEPLOY CONTENT
+    // ═══════════════════════════════════════════════════════════
+
+    function generateDeployContent() {
+      const cfg = getConfig();
+
+      // CloudFormation URL
+      const cfnTemplateUrl = 'https://raw.githubusercontent.com/NjoYMassaworXp/MyAssist_BOT/main/deploy/aws-cloudformation.yaml';
+      const params = [
+        `InstanceType=${cfg.instanceType}`,
+        `BotPort=${cfg.port}`,
+        cfg.groqKey ? `GroqApiKey=${cfg.groqKey}` : '',
+        cfg.geminiKey ? `GeminiApiKey=${cfg.geminiKey}` : '',
+        cfg.cerebrasKey ? `CerebrasApiKey=${cfg.cerebrasKey}` : '',
+        cfg.serperKey ? `SerperApiKey=${cfg.serperKey}` : '',
+        cfg.telegramToken ? `TelegramBotToken=${cfg.telegramToken}` : '',
+        cfg.discordToken ? `DiscordBotToken=${cfg.discordToken}` : '',
+      ].filter(Boolean).join('&');
+
+      const cfnUrl = `https://${cfg.region}.console.aws.amazon.com/cloudformation/home?region=${cfg.region}#/stacks/create/review?stackName=MyAssistBOT&templateURL=${encodeURIComponent(cfnTemplateUrl)}&${params}`;
+
+      document.getElementById('cfnUrl').innerHTML = `
+        ${cfnTemplateUrl}
+        <button class="copy-btn" onclick="copyText('${cfnTemplateUrl}')">📋 Copiar</button>
+      `;
+
+      // Guardar URL para o botão de lançamento
+      document.getElementById('launchCfnBtn').setAttribute('data-url', cfnUrl);
+
+      // Script de instalação manual
+      const envContent = generateEnvContent().replace(/\n/g, '\\n').replace(/'/g, "\\'");
+      const manualScript = `#!/bin/bash
+# MyAssistBOT — Instalação Manual
+set -e
+
+echo "🤖 A instalar MyAssistBOT..."
+
+# Instalar Node.js 20
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo bash -
+sudo apt-get install -y nodejs git
+
+# Clonar
+git clone https://github.com/NjoYMassaworXp/MyAssist_BOT.git ~/myassistbot
+cd ~/myassistbot
+
+# Instalar dependências
+npm install --production
+
+# Criar .env
+cat > .env << 'EOF'
+${generateEnvContent()}EOF
+
+# Instalar PM2
+sudo npm install -g pm2
+
+# Iniciar
+pm2 start orchestrator/api-server.js --name myassistbot
+pm2 save
+pm2 startup
+
+echo "✅ MyAssistBOT a correr na porta ${cfg.port}"
+echo "🌐 Acede em: http://$(curl -s ifconfig.me):${cfg.port}"`;
+
+      document.getElementById('manualScript').innerHTML = `
+        <pre style="margin:0;white-space:pre-wrap;word-break:break-all;">${escapeHtml(manualScript)}</pre>
+        <button class="copy-btn" onclick="copyText(\`${manualScript.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`)">📋 Copiar</button>
+      `;
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    function launchCloudFormation() {
+      const url = document.getElementById('launchCfnBtn').getAttribute('data-url');
+      if (url) window.open(url, '_blank');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // TABS
+    // ═══════════════════════════════════════════════════════════
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.deploy-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // DOWNLOAD .ENV
+    // ═══════════════════════════════════════════════════════════
+
+    function downloadEnvFile() {
+      const content = generateEnvContent();
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '.env';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // HEALTH CHECK
+    // ═══════════════════════════════════════════════════════════
+
+    async function verifyServer() {
+      const urlInput = document.getElementById('verify-url').value.trim();
+      if (!urlInput) return alert('Insere o URL do servidor');
+
+      const baseUrl = urlInput.replace(/\/$/, '');
+      document.getElementById('verifyResults').style.display = 'block';
+      document.getElementById('verifySuccess').style.display = 'none';
+      document.getElementById('verifyFailed').style.display = 'none';
+
+      // Reset
+      ['check-server', 'check-ai', 'check-chat', 'check-ws'].forEach(id => {
+        const el = document.getElementById(id);
+        el.className = 'check-status pending';
+        el.textContent = 'A verificar...';
+      });
+
+      let allOk = true;
+
+      // 1. Server reachable
+      try {
+        const res = await fetch(`${baseUrl}/api/status`, { signal: AbortSignal.timeout(10000) });
+        const data = await res.json();
+        
+        setCheck('check-server', true, `Online (v${data.version || '?'})`);
+
+        // 2. AI configured
+        if (data.ai?.available) {
+          setCheck('check-ai', true, `${data.ai.provider} (${data.ai.model})`);
+        } else {
+          setCheck('check-ai', false, 'Nenhum provider configurado');
+          allOk = false;
+        }
+      } catch (e) {
+        setCheck('check-server', false, 'Inacessível');
+        setCheck('check-ai', false, 'N/A');
+        allOk = false;
+      }
+
+      // 3. Chat functional
+      try {
+        const res = await fetch(`${baseUrl}/api/chat`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: 'que horas são?' }),
+          signal: AbortSignal.timeout(15000)
+        });
+        const data = await res.json();
+        if (data.response || data.success) {
+          setCheck('check-chat', true, 'Funcional');
+        } else {
+          setCheck('check-chat', false, 'Sem resposta');
+          allOk = false;
+        }
+      } catch (e) {
+        setCheck('check-chat', false, 'Falhou');
+        allOk = false;
+      }
+
+      // 4. WebSocket
+      try {
+        const wsUrl = baseUrl.replace('http', 'ws') + '/ws';
+        const ws = new WebSocket(wsUrl);
+        
+        await new Promise((resolve, reject) => {
+          ws.onopen = () => { ws.close(); resolve(); };
+          ws.onerror = reject;
+          setTimeout(reject, 5000);
+        });
+        
+        setCheck('check-ws', true, 'Conectado');
+      } catch {
+        setCheck('check-ws', false, 'Indisponível');
+        // WebSocket fail is not critical
+      }
+
+      // Show result
+      if (allOk) {
+        document.getElementById('verifySuccess').style.display = 'block';
+      } else {
+        document.getElementById('verifyFailed').style.display = 'block';
+      }
+    }
+
+    function setCheck(id, ok, text) {
+      const el = document.getElementById(id);
+      el.className = `check-status ${ok ? 'ok' : 'fail'}`;
+      el.textContent = text;
+    }
+
+    function openBotUrl() {
+      const url = document.getElementById('verify-url').value.trim();
+      if (url) window.open(url, '_blank');
+    }
+
+    // ═══════════════════════════════════════════════════════════
+    // CLIPBOARD
+    // ═══════════════════════════════════════════════════════════
+
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Brief visual feedback
+        const btn = event.target;
+        const original = btn.textContent;
+        btn.textContent = '✅';
+        setTimeout(() => btn.textContent = original, 1500);
+      });
+    }
+
+    function copyToClipboard(elementId) {
+      const el = document.getElementById(elementId);
+      const text = el.textContent.replace('📋 Copiar', '').trim();
+      copyText(text);
+    }
+  </script>
+
+</body>
+</html>
